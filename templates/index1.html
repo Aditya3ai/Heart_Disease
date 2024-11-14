@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diagnosysis</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        /* General styles */
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            font-family: 'Roboto', sans-serif;
+            color: white;
+            overflow-x: hidden;
+        }
+
+        /* Background video */
+        .background-video {
+            position: fixed;
+            right: 0;
+            bottom: 0;
+            min-width: 100%;
+            min-height: 100%;
+            width: auto;
+            height: auto;
+            z-index: -1;
+            filter: brightness(0.5); /* Dim the video */
+        }
+
+        /* Centering content and form container */
+        .page-content {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            flex-direction: column;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 400px;
+            padding: 30px;
+            background: rgba(0, 0, 0, 0.7);
+            border-radius: 15px;
+            text-align: center;
+            box-sizing: border-box;
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            opacity: 0;
+            animation: fadeIn 1s forwards;
+        }
+
+        /* Input styling */
+        input[type="text"] {
+            width: 100%;
+            padding: 12px;
+            margin-top: 10px;
+            margin-bottom: 15px;
+            border: none;
+            border-radius: 5px;
+            font-size: 1em;
+            background-color: #f4f4f4;
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+
+        input[type="text"]:focus {
+            opacity: 0.9;
+            transform: scale(1.05);
+        }
+
+        /* Submit button styling */
+        input[type="submit"] {
+            width: 100%;
+            padding: 12px;
+            font-size: 1.2em;
+            font-weight: bold;
+            color: white;
+            background-color: #4CAF50;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #45a049;
+            transform: scale(1.05);
+        }
+
+        /* Prediction result styling */
+        .prediction-result {
+            margin-top: 20px;
+            padding: 20px;
+            background-color: #333;
+            border-radius: 10px;
+            font-size: 1.3em;
+            font-weight: bold;
+            color: #FFD700;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            opacity: 0;
+            animation: fadeIn 1s 0.5s forwards;
+        }
+
+        /* Smooth fade-in animation */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        /* Labels styling */
+        label {
+            font-size: 1.1em;
+            margin-top: 10px;
+            display: block;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+    <video autoplay muted loop class="background-video">
+        <source src="/static/istockphoto-2163383726-640_adpp_is.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+
+    <!-- Scrollable content container -->
+    <div class="page-content">
+        <div class="container">
+            <h1>Diagnosysis</h1>
+            <form action="/predict" method="POST">
+                <label>Age:</label>
+                <input type="text" name="Age" placeholder="Enter Age">
+
+                <label>Sex (1 = Male, 0 = Female):</label>
+                <input type="text" name="Sex" placeholder="Enter Sex">
+
+                <label>Chest Pain Type (0-3):</label>
+                <input type="text" name="ChestPainType" placeholder="Enter Chest Pain Type">
+
+                <label>Resting Blood Pressure:</label>
+                <input type="text" name="RestingBP" placeholder="Enter Resting BP">
+
+                <label>Cholesterol:</label>
+                <input type="text" name="Cholesterol" placeholder="Enter Cholesterol Level">
+
+                <label>Fasting Blood Sugar (1 = True, 0 = False):</label>
+                <input type="text" name="FastingBS" placeholder="Enter Fasting Blood Sugar">
+
+                <label>Resting ECG (0-2):</label>
+                <input type="text" name="RestingECG" placeholder="Enter Resting ECG">
+
+                <label>Max Heart Rate:</label>
+                <input type="text" name="MaxHR" placeholder="Enter Max Heart Rate">
+
+                <label>Exercise Induced Angina (1 = Yes, 0 = No):</label>
+                <input type="text" name="ExerciseAngina" placeholder="Enter Exercise Angina">
+
+                <label>Oldpeak:</label>
+                <input type="text" name="Oldpeak" placeholder="Enter Oldpeak">
+
+                <label>ST Slope (0-2):</label>
+                <input type="text" name="ST_Slope" placeholder="Enter ST Slope">
+
+                <input type="submit" value="Predict">
+            </form>
+
+            {% if prediction_text %}
+                <div class="prediction-result">
+                    {{ prediction_text }}
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>
